@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team - Aventa Racing Team</title>
+  <meta name="description" content="The ART roster. Performance-selected drivers built to compete at the highest level of sim racing.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-hero {
+      padding: 80px 48px 0;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .page-hero-inner {
+      padding-bottom: 64px;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-hero h1 { margin-top: 16px; }
+
+    /* ─── FOUNDERS ──────────────────────────────────────────── */
+    .founder-section {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 80px 48px;
+    }
+    .founder-card {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 64px;
+      align-items: start;
+      padding: 56px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--crimson);
+      border-radius: var(--radius);
+    }
+    .founder-identity {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .founder-avatar {
+      width: 120px;
+      height: 120px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .founder-avatar-initials {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--crimson);
+    }
+    .founder-name {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .founder-role {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--crimson);
+    }
+    .founder-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      margin-top: 8px;
+    }
+    .founder-stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .founder-stat-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .founder-stat-val {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--white);
+    }
+    .founder-bio {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ─── DRIVER ROSTER ─────────────────────────────────────── */
+    .roster-section {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .roster-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 80px 48px;
+    }
+    .roster-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .roster-grid .driver-card:nth-child(4),
+    .roster-grid .driver-card:nth-child(5) {
+      grid-column: span 1;
+    }
+    @supports (display: grid) {
+      .roster-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .roster-grid .open-bottom {
+        grid-column: 1;
+      }
+    }
+    .driver-card {
+      background: var(--black);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      transition: border-color var(--transition), transform var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .driver-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--crimson);
+      transform: scaleX(0);
+      transition: transform var(--transition);
+      transform-origin: left;
+    }
+    .driver-card:hover::before { transform: scaleX(1); }
+    .driver-card:hover { border-color: var(--muted2); transform: translateY(-2px); }
+    .driver-number {
+      font-family: var(--font-display);
+      font-size: 52px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--border);
+      position: absolute;
+      top: 24px; right: 24px;
+      transition: color var(--transition);
+    }
+    .driver-card:hover .driver-number { color: rgba(255,35,72,0.15); }
+    .driver-avatar {
+      width: 64px;
+      height: 64px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .driver-initials {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .driver-name {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .driver-nationality {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .driver-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .driver-stats-mini {
+      display: flex;
+      gap: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .driver-stat-mini {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .driver-stat-mini-val {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--white);
+    }
+    .driver-stat-mini-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ANCHOR CARD - Luke Fallon */
+    .driver-card.anchor {
+      border-color: rgba(255,35,72,0.3);
+      background: var(--surface);
+    }
+    .driver-card.anchor::before { transform: scaleX(1); }
+
+    /* OPEN SEAT CARD */
+    .driver-card.open-seat {
+      border-style: dashed;
+      opacity: 0.5;
+      transition: opacity var(--transition);
+    }
+    .driver-card.open-seat:hover { opacity: 1; }
+    .open-seat-text {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    /* ─── ROLES ─────────────────────────────────────────────── */
+    .roles-section {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 80px 48px;
+    }
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .role-card {
+      padding: 32px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+    .role-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .page-hero { padding: 40px 20px 0; }
+      .founder-section { padding: 40px 20px; }
+      .founder-card { grid-template-columns: 1fr; gap: 32px; padding: 24px 20px; }
+      .roster-inner { padding: 40px 20px; }
+      .roster-grid { grid-template-columns: 1fr; }
+      .roles-section { padding: 40px 20px; }
+      .roles-grid { grid-template-columns: 1fr; }
+      .team-image-wrap { padding: 0 !important; }
+      .team-image-wrap .reveal { border-radius: 0 !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/banner_transparent.png" alt="Aventa Racing Team">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="racing.html">Racing</a></li>
+      <li><a href="partners.html">Partners</a></li>
+      <li><a href="join.html" class="nav-cta">Apply</a></li>
+    </ul>
+    <div class="nav-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+  <div class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="team.html">Team</a>
+    <a href="racing.html">Racing</a>
+    <a href="partners.html">Partners</a>
+    <a href="join.html">Apply</a>
+  </div>
+
+  <main class="page">
+
+    <!-- PAGE HERO -->
+    <div class="page-hero">
+      <div class="page-hero-inner reveal">
+        <span class="eyebrow">The Roster</span>
+        <h1 class="display-lg">Every seat earned.<br>Every driver selected.</h1>
+        <p class="body-lg" style="max-width: 560px; margin-top: 20px;">ART doesn't fill seats for the sake of numbers. Each driver on this roster was identified, assessed, and invited because they met the standard - and they've kept it.</p>
+      </div>
+    </div>
+
+    <!-- TEAM IMAGE -->
+    <div class="team-image-wrap" style="padding: 48px 48px 0; max-width: 1280px; margin: 0 auto;">
+      <div class="reveal" style="overflow: hidden; border-radius: var(--radius);">
+        <img src="assets/499.jpg" alt="ART LMP Prototype at Sebring" style="width: 100%; height: clamp(200px, 40vw, 480px); object-fit: cover; object-position: center 35%; display: block;">
+      </div>
+    </div>
+
+    <!-- FOUNDER -->
+    <div class="founder-section">
+      <div class="section-header reveal">
+        <span class="eyebrow">Team Principal</span>
+      </div>
+      <div class="founder-card reveal">
+        <div class="founder-identity">
+          <div class="founder-avatar">
+            <span class="founder-avatar-initials">JC</span>
+          </div>
+          <div>
+            <p class="founder-role">Founder - Team Principal</p>
+            <h2 class="founder-name">Jack Crockett</h2>
+          </div>
+          <div class="founder-stats">
+            <div class="founder-stat-row">
+              <span class="founder-stat-label">Based</span>
+              <span class="founder-stat-val">Adelaide, SA</span>
+            </div>
+            <div class="founder-stat-row">
+              <span class="founder-stat-label">Platform</span>
+              <span class="founder-stat-val">iRacing</span>
+            </div>
+            <div class="founder-stat-row">
+              <span class="founder-stat-label">Focus</span>
+              <span class="founder-stat-val">Endurance / GT</span>
+            </div>
+          </div>
+        </div>
+        <div class="founder-bio">
+          <p class="body-md">
+            ART was built from a simple belief: that sim racing deserves to be taken seriously. Not as a casual hobby, but as a competitive discipline with real structure, real accountability, and real results.
+          </p>
+          <p class="body-md">
+            As Team Principal, the mandate is clear - build a team that competes with the same professionalism you'd expect from a real-world motorsport operation. That means performance-based pay structures, disciplined driver selection, and a long-term growth strategy that doesn't compromise on standards.
+          </p>
+          <p class="body-md">
+            The Aventa brand represents more than a racing team. It's a vision for what sim racing can become when the people running it treat it like it matters.
+          </p>
+          <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px;">
+            <span class="tag tag-crimson">Founder</span>
+            <span class="tag">Team Principal</span>
+            <span class="tag">Strategy</span>
+            <span class="tag">Driver Recruitment</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DRIVER ROSTER -->
+    <div class="roster-section">
+      <div class="roster-inner">
+        <div class="section-header reveal">
+          <span class="eyebrow">Active Drivers</span>
+          <h2 class="display-md">The Lineup</h2>
+        </div>
+        <div class="roster-grid">
+
+          <!-- Luke Fallon -->
+          <div class="driver-card anchor reveal">
+            <span class="driver-number">01</span>
+            <div class="driver-avatar">
+              <span class="driver-initials">LF</span>
+            </div>
+            <p class="driver-name">Luke Fallon</p>
+            <p class="driver-nationality">Australia - iRacing</p>
+            <div class="driver-tags">
+              <span class="tag tag-crimson">Sports Car</span>
+              <span class="tag">GT3</span>
+              <span class="tag">GTP</span>
+            </div>
+            <p class="body-md" style="font-size: 13px; margin-bottom: 16px;">
+              Fast, consistent, and exactly the kind of racer this team is built around - committed to results and to the culture that produces them.
+            </p>
+            <div class="driver-stats-mini">
+              <div class="driver-stat-mini">
+                <span class="driver-stat-mini-val">GT3</span>
+                <span class="driver-stat-mini-label">Primary Class</span>
+              </div>
+              <div class="driver-stat-mini">
+                <span class="driver-stat-mini-val">GTP</span>
+                <span class="driver-stat-mini-label">Secondary Class</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ryan Furber -->
+          <div class="driver-card anchor reveal reveal-delay-1">
+            <span class="driver-number">02</span>
+            <div class="driver-avatar">
+              <span class="driver-initials">RF</span>
+            </div>
+            <p class="driver-name">Ryan Furber</p>
+            <p class="driver-nationality">Australia - iRacing</p>
+            <div class="driver-tags">
+              <span class="tag tag-crimson">Sports Car</span>
+              <span class="tag">GT3</span>
+              <span class="tag">GTP</span>
+            </div>
+            <p class="body-md" style="font-size: 13px; margin-bottom: 16px;">
+              At home in GT3 and GTP machinery, Ryan brings the pace and composure that endurance racing demands.
+            </p>
+            <div class="driver-stats-mini">
+              <div class="driver-stat-mini">
+                <span class="driver-stat-mini-val">GT3</span>
+                <span class="driver-stat-mini-label">Primary Class</span>
+              </div>
+              <div class="driver-stat-mini">
+                <span class="driver-stat-mini-val">GTP</span>
+                <span class="driver-stat-mini-label">Secondary Class</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Noah Osbaldeston -->
+          <div class="driver-card anchor reveal reveal-delay-2">
+            <span class="driver-number">03</span>
+            <div class="driver-avatar">
+              <span class="driver-initials">NO</span>
+            </div>
+            <p class="driver-name">Noah Osbaldeston</p>
+            <p class="driver-nationality">United Kingdom - iRacing & Real World</p>
+            <div class="driver-tags">
+              <span class="tag tag-crimson">Prototype</span>
+              <span class="tag">Formula</span>
+              <span class="tag">Real World</span>
+            </div>
+            <p class="body-md" style="font-size: 13px; margin-bottom: 16px;">
+              The only ART driver competing in the real world, Noah races Sports 1000s on the British circuit. On iRacing, he operates in prototype and formula classes - a versatile driver with genuine motorsport pedigree.
+            </p>
+            <div class="driver-stats-mini">
+              <div class="driver-stat-mini">
+                <span class="driver-stat-mini-val">LMP</span>
+                <span class="driver-stat-mini-label">Primary Class</span>
+              </div>
+              <div class="driver-stat-mini">
+                <span class="driver-stat-mini-val">Sports 1000</span>
+                <span class="driver-stat-mini-label">Real World</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Open Seat 1 -->
+          <div class="driver-card open-seat reveal reveal-delay-3">
+            <span class="driver-number">04</span>
+            <div class="driver-avatar" style="border-style: dashed;">
+              <span class="driver-initials" style="font-size: 14px; letter-spacing: 0.1em;">TBA</span>
+            </div>
+            <p class="open-seat-text">Seat Available</p>
+            <p class="body-md" style="font-size: 13px; margin-bottom: 16px;">
+              ART is looking for a sports car driver. GT3 or GTP experience required. This seat is reserved for the right person - not the available one.
+            </p>
+            <a href="join.html" class="btn btn-ghost" style="font-size: 12px; padding: 10px 20px;">Apply to Earn It</a>
+          </div>
+
+          <!-- Open Seat 2 -->
+          <div class="driver-card open-seat reveal reveal-delay-4">
+            <span class="driver-number">05</span>
+            <div class="driver-avatar" style="border-style: dashed;">
+              <span class="driver-initials" style="font-size: 14px; letter-spacing: 0.1em;">TBA</span>
+            </div>
+            <p class="open-seat-text">Seat Available</p>
+            <p class="body-md" style="font-size: 13px; margin-bottom: 16px;">
+              A sports car seat is open. If you have the pace, the consistency, and the commitment - we want to hear from you.
+            </p>
+            <a href="join.html" class="btn btn-ghost" style="font-size: 12px; padding: 10px 20px;">Apply to Earn It</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ROLES -->
+    <div class="roles-section">
+      <div class="section-header reveal">
+        <span class="eyebrow">Behind the Team</span>
+        <h2 class="display-md">Structure that supports speed.</h2>
+        <p class="body-lg" style="max-width: 560px; margin-top: 16px;">A racing team is more than its drivers. ART is structured to support competitive performance at every level.</p>
+      </div>
+      <div class="roles-grid">
+        <div class="role-card reveal">
+          <p class="role-title">Driver Development</p>
+          <p class="body-md">ART fosters a culture of collective improvement. Drivers share data, debrief together, and push each other - the team gets faster as a unit, not just as individuals.</p>
+        </div>
+        <div class="role-card reveal reveal-delay-1">
+          <p class="role-title">Race Strategy</p>
+          <p class="body-md">Pit window timing, tyre management, fuel strategy. Endurance racing is won in the pits as much as on track.</p>
+        </div>
+        <div class="role-card reveal reveal-delay-2">
+          <p class="role-title">Team Culture</p>
+          <p class="body-md">Accountability, communication, and standards that don't drop. ART is built on the belief that how you show up in the team matters as much as how you show up on track.</p>
+        </div>
+        <div class="role-card reveal reveal-delay-3">
+          <p class="role-title">Content & Media</p>
+          <p class="body-md">Race highlights, driver profiles, team announcements. ART builds its profile alongside its results.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM CTA -->
+    <section class="section" style="text-align: center;">
+      <div class="reveal">
+        <span class="eyebrow">Join the Team</span>
+        <h2 class="display-md">Think you belong on this roster?</h2>
+        <p class="body-lg" style="max-width: 440px; margin: 20px auto 32px;">Prove it. The application process is how we find the exceptional few who didn't wait to be invited.</p>
+        <a href="join.html" class="btn btn-primary btn-arrow">Apply Now</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-logo"><img src="assets/logo_transparent.png" alt="Aventa Racing Team"></div>
+    <nav class="footer-links">
+      <a href="team.html">Team</a>
+      <a href="racing.html">Racing</a>
+      <a href="partners.html">Partners</a>
+      <a href="join.html">Apply</a>
+    </nav>
+    <div class="footer-socials">
+      <a href="https://discord.gg/SThfbsQeVa" target="_blank" rel="noopener" class="footer-social" aria-label="Discord">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/aventaracing/" target="_blank" rel="noopener" class="footer-social" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+    </div>
+    <p class="footer-copy">© 2026 Aventa Racing Team. All rights reserved.</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

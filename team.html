@@ -390,7 +390,7 @@
         <div class="roster-grid">
 
           <!-- Luke Fallon -->
-          <div class="driver-card anchor reveal">
+          <div class="driver-card anchor reveal" data-cust-id="1051347">
             <span class="driver-number">01</span>
             <div class="driver-avatar">
               <span class="driver-initials">LF</span>
@@ -407,18 +407,22 @@
             </p>
             <div class="driver-stats-mini">
               <div class="driver-stat-mini">
-                <span class="driver-stat-mini-val">GT3</span>
-                <span class="driver-stat-mini-label">Primary Class</span>
+                <span class="driver-stat-mini-val" data-stat="irating">—</span>
+                <span class="driver-stat-mini-label">iRating</span>
               </div>
               <div class="driver-stat-mini">
-                <span class="driver-stat-mini-val">GTP</span>
-                <span class="driver-stat-mini-label">Secondary Class</span>
+                <span class="driver-stat-mini-val" data-stat="safety">—</span>
+                <span class="driver-stat-mini-label">Safety Rating</span>
+              </div>
+              <div class="driver-stat-mini">
+                <span class="driver-stat-mini-val">GT3</span>
+                <span class="driver-stat-mini-label">Primary Class</span>
               </div>
             </div>
           </div>
 
           <!-- Ryan Furber -->
-          <div class="driver-card anchor reveal reveal-delay-1">
+          <div class="driver-card anchor reveal reveal-delay-1" data-cust-id="1299152">
             <span class="driver-number">02</span>
             <div class="driver-avatar">
               <span class="driver-initials">RF</span>
@@ -435,18 +439,22 @@
             </p>
             <div class="driver-stats-mini">
               <div class="driver-stat-mini">
-                <span class="driver-stat-mini-val">GT3</span>
-                <span class="driver-stat-mini-label">Primary Class</span>
+                <span class="driver-stat-mini-val" data-stat="irating">—</span>
+                <span class="driver-stat-mini-label">iRating</span>
               </div>
               <div class="driver-stat-mini">
-                <span class="driver-stat-mini-val">GTP</span>
-                <span class="driver-stat-mini-label">Secondary Class</span>
+                <span class="driver-stat-mini-val" data-stat="safety">—</span>
+                <span class="driver-stat-mini-label">Safety Rating</span>
+              </div>
+              <div class="driver-stat-mini">
+                <span class="driver-stat-mini-val">GT3</span>
+                <span class="driver-stat-mini-label">Primary Class</span>
               </div>
             </div>
           </div>
 
           <!-- Noah Osbaldeston -->
-          <div class="driver-card anchor reveal reveal-delay-2">
+          <div class="driver-card anchor reveal reveal-delay-2" data-cust-id="987717">
             <span class="driver-number">03</span>
             <div class="driver-avatar">
               <span class="driver-initials">NO</span>
@@ -463,12 +471,16 @@
             </p>
             <div class="driver-stats-mini">
               <div class="driver-stat-mini">
-                <span class="driver-stat-mini-val">LMP</span>
-                <span class="driver-stat-mini-label">Primary Class</span>
+                <span class="driver-stat-mini-val" data-stat="irating">—</span>
+                <span class="driver-stat-mini-label">iRating</span>
               </div>
               <div class="driver-stat-mini">
-                <span class="driver-stat-mini-val">Sports 1000</span>
-                <span class="driver-stat-mini-label">Real World</span>
+                <span class="driver-stat-mini-val" data-stat="safety">—</span>
+                <span class="driver-stat-mini-label">Safety Rating</span>
+              </div>
+              <div class="driver-stat-mini">
+                <span class="driver-stat-mini-val">LMP</span>
+                <span class="driver-stat-mini-label">Primary Class</span>
               </div>
             </div>
           </div>
@@ -562,5 +574,33 @@
   </footer>
 
   <script src="main.js"></script>
+  <script>
+    async function loadDriverStats() {
+      try {
+        const res = await fetch('/api/iracing');
+        if (!res.ok) return;
+        const { stats } = await res.json();
+
+        stats.forEach(({ custId, irating, safetyRating, licenseClass }) => {
+          const card = document.querySelector(`[data-cust-id="${custId}"]`);
+          if (!card) return;
+
+          const iratingEl = card.querySelector('[data-stat="irating"]');
+          const safetyEl  = card.querySelector('[data-stat="safety"]');
+
+          if (iratingEl && irating != null) {
+            iratingEl.textContent = irating.toLocaleString();
+          }
+          if (safetyEl && safetyRating != null && licenseClass) {
+            safetyEl.textContent = `${licenseClass} ${safetyRating.toFixed(2)}`;
+          }
+        });
+      } catch {
+        // Silently fail — cards show "—" placeholder
+      }
+    }
+
+    loadDriverStats();
+  </script>
 </body>
 </html>

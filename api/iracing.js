@@ -52,12 +52,20 @@ module.exports = async function handler(req, res) {
     // Authenticate
     const authRes = await fetch(`${IRACING_BASE}/auth`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      },
       body: JSON.stringify({ email, password: hashPassword(email, password) }),
     });
 
     if (!authRes.ok) {
-      return res.status(502).json({ error: 'iRacing authentication failed' });
+      const errBody = await authRes.text().catch(() => '');
+      console.error(`iRacing auth failed: HTTP ${authRes.status} — ${errBody}`);
+      return res.status(502).json({
+        error: 'iRacing authentication failed',
+        iracing_status: authRes.status,
+      });
     }
 
     // Extract session cookies — getSetCookie() available Node 18.14+

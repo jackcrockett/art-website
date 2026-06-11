@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/iracing.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}

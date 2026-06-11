@@ -45,7 +45,14 @@ module.exports = async function handler(req, res) {
   const password = process.env.IRACING_PASSWORD;
 
   if (!email || !password) {
-    return res.status(500).json({ error: 'iRacing credentials not configured' });
+    return res.status(500).json({
+      error: 'iRacing credentials not configured',
+      debug: {
+        hasEmail: !!process.env.IRACING_EMAIL,
+        hasPassword: !!process.env.IRACING_PASSWORD,
+        iracingKeys: Object.keys(process.env).filter(k => k.startsWith('IRACING')),
+      },
+    });
   }
 
   try {

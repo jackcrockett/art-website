@@ -240,7 +240,7 @@ ul { list-style: none; }
 }
 .card:hover { border-color: var(--muted2); }
 .card-accent {
-  border-left: 3px solid var(--crimson);
+  border-color: var(--crimson);
 }
 
 /* ─── SECTION ─────────────────────────────────────────────── */

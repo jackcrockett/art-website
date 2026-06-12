@@ -109,7 +109,7 @@ ul { list-style: none; }
   width: 24px;
   height: 2px;
   background: var(--white);
-  transition: all var(--transition);
+  transition: background var(--transition), transform var(--transition), opacity var(--transition);
 }
 
 /* ─── PAGE WRAPPER ────────────────────────────────────────── */
@@ -180,7 +180,7 @@ ul { list-style: none; }
   border-radius: var(--radius);
   cursor: pointer;
   border: none;
-  transition: all var(--transition);
+  transition: background var(--transition), color var(--transition), border-color var(--transition), opacity var(--transition);
 }
 .btn-primary {
   background: var(--crimson);
